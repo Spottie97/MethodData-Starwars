@@ -1,3 +1,4 @@
+// src/CompareCharacters.js
 import React, { useState } from 'react';
 import axios from 'axios';
 
@@ -41,7 +42,7 @@ const CompareCharacters = () => {
             </div>
             {error && <p>{error}</p>}
             {result && (
-                <div>
+                <div className="result">
                     <h2>Comparison Result</h2>
                     <pre>{JSON.stringify(result, null, 2)}</pre>
                 </div>
