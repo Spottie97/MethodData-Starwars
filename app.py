@@ -1,28 +1,25 @@
 from flask import Flask, request, jsonify
-import requests
+import swapi
 
 app = Flask(__name__)
 
-SWAPI_BASE_URL = 'https://swapi.dev/api/people/'
-
 def get_character_data(name):
-    try:
-        response = requests.get(SWAPI_BASE_URL, params={'search': name})
-        response.raise_for_status() 
-        data = response.json()
-        if data['count'] > 0:
-            return data['results'][0]
-    except requests.exceptions.RequestException as e:
-        return None
+    people = swapi.get_all("people")
+    for person in people.items:
+        if person.name.lower() == name.lower():
+            return person
+    return None
 
 def compare_characters(char1, char2):
     attributes = ['height', 'mass', 'hair_color', 'skin_color']
     comparison = {}
     for attr in attributes:
-        if char1[attr] > char2[attr]:
-            comparison[attr] = char1['name']
-        elif char1[attr] < char2[attr]:
-            comparison[attr] = char2['name']
+        char1_attr = getattr(char1, attr)
+        char2_attr = getattr(char2, attr)
+        if char1_attr > char2_attr:
+            comparison[attr] = char1.name
+        elif char1_attr < char2_attr:
+            comparison[attr] = char2.name
         else:
             comparison[attr] = 'Tie'
     return comparison
