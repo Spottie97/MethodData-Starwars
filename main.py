@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi import HTTPException
 from typing import Dict
 import requests
 
@@ -36,6 +37,7 @@ def compare_characters(char1: Dict, char2: Dict) -> Dict:
                 'winner': 'character1' if char1_value > char2_value else 'character2'
             }
     return comparison
+
 
 @app.get("/compare")
 def compare(name1: str, name2: str):
